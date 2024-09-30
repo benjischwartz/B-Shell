@@ -10,7 +10,7 @@ public:
 // ls, grep, awk
 class ExtCommand : Command {
     ExtCommand(const std::string& command_, const std::vector<std::string>& args_) : 
-        args(std::move(args_)), command(std::move(command_))
+        command(std::move(command_)), args(std::move(args_))
     {
         // Fork new process
         pid_t pid = fork();
