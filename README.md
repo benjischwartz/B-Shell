@@ -1,5 +1,5 @@
 # B-Shell
-Simplistic Unix shell in C
+Simplistic Unix shell in C++
 
 ## Table of Contents
 
