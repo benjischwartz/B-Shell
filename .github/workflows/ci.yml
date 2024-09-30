@@ -15,16 +15,15 @@ jobs:
         with:
           cmake-version: '3.21.0'
 
-      - name: Create build directory
+      - name: Create build directory and build
         run: |
           mkdir build
           cd build
-
-      - name: Set up CMake
-        run: 
           cmake ..
           cmake --build .
 
       - name: Run tests
-        run: ctest --output-on-failure --test-dir build
+        run: |
+          cd build
+          ctest --output-on-failure
 
