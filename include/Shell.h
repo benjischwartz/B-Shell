@@ -1,25 +1,42 @@
 #include <memory>
 #include <string>
-#include "CommandParser.h"
-#include "Environment.h"
-#include "History.h"
+#include <unordered_set>
+#include <vector>
+
+/* 
+    General structure of Linux/Unix command: 
+      command [-flag(s)] [-option(s) [value]] [argument(s)]
+    For now, we will just do:
+      command [argument(s)]
+*/
+
+struct Command {
+    std::string command;
+    std::vector<std::string> argv;
+};
 
 class Shell {
 public:
     void run();
 
 private:
-    /*
-    CommandParser parser;
-    Environment env;
-    History history;
-    */
-
-    std::unique_ptr<Command> parseInput(const std::string& input);
-    bool executeCommand(std::unique_ptr<Command> command) 
-    {
-        return command->execute();
-    }
+    bool parseCommand(std::string& input, Command& c);
+    bool executeCommand(Command& c);
+    std::unordered_set<std::string> BuiltinCommandList {
+        "cd",
+        "exit",
+        "pwd",
+        "echo",
+        "help",
+        "export",
+        "unset",
+        "history",
+    };
+    std::unordered_set<std::string> ExternalCommandList {
+        "ls",
+        "grep",
+        "cat"
+    };
 };
 
 
