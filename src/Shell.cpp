@@ -1,10 +1,7 @@
 #include <iostream>
-#include <memory>
 #include <sstream>
 #include <string>
-#include <strstream>
 #include <sys/wait.h>
-#include <vector>
 #include <unistd.h>
 #include "../include/Shell.h"
 
