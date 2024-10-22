@@ -40,7 +40,7 @@ bool Shell::parseCommand(std::string& input, Command& c)
     while (ss >> temp) {
         args.push_back(temp);
     }
-    c.argv = args;
+    c.argv = std::move(args);
     return true;
 }
 
@@ -54,11 +54,14 @@ bool Shell::executeCommand(Command& c)
     // External command
     else {
         std::cout << "That's an external command!\n";
-        std::vector<char*> cstrings;
-        cstrings.reserve(c.argv.size());
-        for (size_t i = 0; i < c.argv.size(); ++i) {
-            cstrings.push_back(const_cast<char*>(c.argv[i].c_str()));
+        std::vector<char*> argv(c.argv.size() + 2);
+        argv[0] = const_cast<char*>(c.command.c_str());
+
+        for (size_t i = 0; i < c.argv.size(); ++i)
+        {
+            argv[i + 1] = const_cast<char*>(c.argv[i].c_str());
         }
+        argv[c.argv.size() + 1] = nullptr;
 
         pid_t pid = fork();
         if (pid == -1) 
@@ -67,7 +70,7 @@ bool Shell::executeCommand(Command& c)
         } 
         else if (pid == 0) 
         {
-            execvp(c.command.c_str(), &cstrings[0]);
+            execvp(argv[0], argv.data());
         }
         else {
             wait(NULL);
